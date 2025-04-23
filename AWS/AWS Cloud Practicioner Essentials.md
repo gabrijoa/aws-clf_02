@@ -3,7 +3,7 @@
 
 >_O modelo cliente-servidor é um tipo de arquitetura de software em que um cliente faz um pedido de dados ou serviço e um servidor processa esse pedido, retornando a resposta adequada. Por exemplo, em uma biblioteca, o visitante (cliente) solicita um livro e o bibliotecário (servidor) entrega o livro requisitado. No ambiente virtual, ao buscar um livro em um site, o servidor recebe sua consulta e devolve o conteúdo solicitado para leitura._
 
-![Modelo cliente-servidor](PICS/client-server.png)
+![Modelo cliente-servidor](../PICS/client-server.png)
 *Figura 1: Na computação, um cliente pode ser um browser ou uma aplicação desktop; o servidor pode ser um serviço como AWS Lambda, um computador on‑premises ou uma instância EC2.*
 
 

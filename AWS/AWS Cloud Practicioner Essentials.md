@@ -3,7 +3,7 @@
 
 >_O modelo cliente-servidor é um tipo de arquitetura de software em que um cliente faz um pedido de dados ou serviço e um servidor processa esse pedido, retornando a resposta adequada. Por exemplo, em uma biblioteca, o visitante (cliente) solicita um livro e o bibliotecário (servidor) entrega o livro requisitado. No ambiente virtual, ao buscar um livro em um site, o servidor recebe sua consulta e devolve o conteúdo solicitado para leitura._
 
-![[client-server.png]]
+![Modelo cliente-servidor](../PICS/client-server.png)
 *Figura 1: Na computação, um cliente pode ser um browser ou uma aplicação desktop; o servidor pode ser um serviço como AWS Lambda, um computador on‑premises ou uma instância EC2.*
 
 
@@ -31,7 +31,7 @@
 	Todos os recursos são provisionados pela sua própria infraestrutura, utilizando virtualização e ferramentas de gerenciamento de recursos.
 	Toda a função de infraestrutura é sua como Orquestração, backup, troca de equipamento obsoleto, etc.
 	
-	*Exemplo: Normalmente utilizado em processos a onde as informações necessitam de maior controle sobre segurança, conformidade e privacidade, muito utilizado para empresas que trabalham com dados sensíveis ou governos.*
+	*Exemplo: Normalmente utilizado em processos onde as informações necessitam de maior controle sobre segurança, conformidade e privacidade, muito utilizado para empresas que trabalham com dados sensíveis ou governos.*
 	
 - **Hybrid-based (Cloud Híbrida)**
 	Integra nuvem pública e on-premises conforme necessidade; conecta workloads legados e serviços em nuvem.
@@ -65,3 +65,183 @@
 | Velocidade e agilidade         | Provisionamento em minutos acelera desenvolvimento, testes e exeperimentação            |
 | Sem manutenção de data centers | Provedor cuida de Hardware e infraestrutura.                                            |
 | alcance global em minutos      | Deploy em múltiplas regiões com poucos cliques, reduzindo latência para usuários finais |
+
+## 2.1 EC2 (Elastic Compute Cloud)
+
+>_Amazon Elastic Compute Cloud (EC2) fornece capacidade de computação de forma segura e redimensionável, visando substituir servidores físicos, você pode criar instâncias de forma manual ou programática, pagando apenas pelo tempo de execução._
+
+#### benefícios do EC2
+
+| Benefícios     | Explicação                                                                                     |
+| -------------- | ---------------------------------------------------------------------------------------------- |
+| Flexibilidade  | Você pode iniciar, destruir e redimensionar instâncias conforme necessário.                    |
+| Custo-efetivo  | Pague apenas pelas instâncias que está utilizando.                                             |
+| Agilidade      | Você pode lançar uma instância EC2 em minutos, comparando a semanas com servidores físicos.    |
+| Controle total | Controle sobre sistema operacional, software instalado, redes e especificações computacionais. |
+| Segurança      | instâncias isoladas por virtualização (multitenancy + hypervisor gerenciado pela AWS.)         |
+
+#### Comparação: On-premises vs EC2
+
+
+| Critério                 | On-premises               | Amazon EC2             |
+| ------------------------ | ------------------------- | ---------------------- |
+| Tempo de provisionamento | semanas/Meses             | Minutos                |
+| Investimento inicial     | Alto (compra de hardware) | Nenhum (pay-as-you-go) |
+| Escalabilidade           | Limitada ao hardware      | Sob demanda            |
+| Flexibilidade            | Baixa                     | Alta                   |
+| Custo de Manutenção      | Alto                      | AWS gerencia por você  |
+
+#### Casos de uso 
+- Execute aplicações empresariais e nativas de nuvem
+	A AWS fornece infraestrura segura, confiável e de alta performance para atender as necessidades do cliente
+- workloads;
+	A AWS fornece computação para os mais variados tipos de implementações para atividades como ML, processamento em batch, testes, desenvolvimento e etc.
+- Desenvolver para plataformas Apple
+	Para desenvolver aplicações para Infraestrutura Apple, você precisa desenvolver em Ambientes macOS, com o EC2, você pode gerencias instâncias Apple para desenvolver, testar, executar e assinar sobre a sua demanda.
+
+#### Como funciona o EC2
+1. Launch
+	   Você faz a configuração de hardware (OS, memoria RAM ou HD, Processador), configura formas de acesso (SSH, API, SDKS), e seu tráfego de rede (define se irá ser publico ou privado, com configurações de blocos de IP).
+2. Connect
+	Você se conecta com a aplicação da forma que foi configurada.
+3. Use
+	Você disponibiliza como sua aplicação irá ser fornecida para o determinado uso da sua aplicação/Workload.
+![ec2 diagrama](../PICS/ec2-diagram.png)
+
+>*a configuração da EC2 pode ser feita junto com outros serviços da nuvem AWS, desde a implementação programática, escalabilidade, definição de custos e conexão com serviços de banco de dados, teste, escalabilidade, análise de dados, criptografia e etc.*
+#### Tipos de instâncias EC2
+
+- **General purpose (uso geral)**
+	Equilíbrio entre CPU, memória e rede. Bom para workloads variados e simplificados (pequenos banco de dados e aplicações de uso geral)
+- **Compute optimized (computação otimizada)**
+	Instâncias com CPU de alta performance, ideais para workloads intensivos em processamento, como servidores web de alta carga, batch processing e servidores de jogos dedicados.
+- **Memory optimized** (memória RAM otimizada)
+	Possui bastante memória ram; ideal para grandes conjuntos de dados na memória (bancos in-memory, processamento em tempo real).
+	Ideal para aplicações que exigem dados pré-carregados na memória, garantindo baixa latência e alta performance.”
+	
+ - **Accelerated computing** (computação acelerada)
+	 Utiliza aceleração de hardware com GPUs e FPGA para performar atividades específicas, accelerated computing é utilizada para renderização 3D, machine learning e processamento de vidoeos.
+- **Storage optimized** (armazenamento otimizado)
+	Alta performance de I/O de disco (IOPS elevado); indicado para data warehouses, OLTP de alta frequência, sistema de arquivos distribuídos
+	em computação IOPS significa **input output operations per second**.
+	pode se assimilar a entrada e saida de dados em grande escala em uma aplicação como necessidade de uso do Storage optimized.
+
+##### Casos de uso de tipo de EC2
+
+| **Tipo de instncia (EC2)** | Foco      | casos de uso                                                                                                                                                                                                                                                                                                                                           |
+| -------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **General purpose**        | uso geral | hospedar servidores web e APIs de uso geral, onde CPU, memória e rede têm demandas equilibradas;**<br><br>**Executar aplicações de back-end para microserviços ou ambientes de desenvolvimento/teste;**<br><br>**Bancos de dados de pequeno a médio porte, como MySQL ou PostgreSQL de uso moderado**<br>                                              |
+| **Compute optimized**      | CPU       | Processamento de grandes volumes de transações em batch, como cobrança de cartões ou geração de relatórios financeiros noturnos;<br><br>Servidores de jogos online que exigem alta velocidade (CPU) para física e lógica do jogo;<br><br>Simulações científicas e de engenharia (HPC), como modelagem de fluidos ou análises genômicas.                |
+| **Memory optimized**       | RAM       | Bancos de dados in-memory, como Redis ou SAP HANA, que carregam todo o dataset na RAM para latência muito baixa;<br><br>Processamento em tempo real de streams de dados grandes, por exemplo análise em memória de logs, telemetria ou dados de IoT;<br><br>Caches de alta capacidade para acelerar aplicações web de grande escal;                    |
+| **Accelerated computing**  | GPU       | Treinamento e inferência de modelos de machine learning usando GPU (TensorFlow, PyTorch);<br><br>Renderização de gráficos 3D, edição e transcodificação de vídeo em tempo real;<br><br>Workloads de computação científica que se beneficiam de cálculos em ponto flutuante acelerados por FPGA;                                                        |
+| **Storage Optimized**      | HD (I/O)  | Data warehouses como amazon Redshift ou sistemas de BI que executam consultas analíticas intensivas em I/O;<br><br>Sistemas de arquivos distribuídos e Big Data(Hadoop, Spark) que fazem leitura e escrita intensiva em disco local;<br><br>Aplicações OLTP de alta frequência, como plataformas de e-commerce com milhares de transações por segundo; |
+
+#### Amazon EC2 Pricing
+
+>o serviço Amazon EC2 oferece várias opções de preços para diferentes casos de uso. A cobrança é feita apenas pelo tempo de computação utilizado. 
+
+#### Modelos de precificação
+
+| Tipo de Instância               | Descrição                                                       | Contrato / Compromisso                                         | Economia (%)        | Casos de Uso Recomendados                                        | Peculiaridades / Observações                                                                                               |
+| ------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------- | ------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **On-Demand**                   | Pague por hora ou segundo de uso.                               | Nenhum. Uso sob demanda.                                       | Nenhuma             | Workloads imprevisíveis, desenvolvimento, testes rápidos.        | Sem custos antecipados. Ideal para começar. Sem reserva de capacidade.                                                     |
+| **Reserved (Standard)**         | Desconto por uso contínuo de instâncias específicas.            | 1 ou 3 anos. Escolha exata de tipo, tamanho, OS, tenancy.      | Até 75%             | Aplicações com carga estável e previsível por longo prazo.       | Pode reservar capacidade em uma AZ. Desconto maior que Savings Plan.                                                       |
+| **Reserved (Convertible)**      | Igual ao Standard, mas com flexibilidade para trocar tipo e AZ. | 1 ou 3 anos. Compromisso de uso, mas com mais flexibilidade.   | Menor que Standard  | Workloads estáveis, mas com incertezas quanto a instância.       | Permite trocar tipo de instância, OS, AZ. Menor economia devido à flexibilidade.                                           |
+| **Savings Plan (EC2 Instance)** | Compromisso com gasto por hora em uma família de instância.     | 1 ou 3 anos. Valor ($/h) fixo em família e região.             | Até 72%             | Quando há flexibilidade em tipo/tamanho/OS da instância.         | Não reserva capacidade. Não precisa escolher instância exata. Aplica-se à família, região. Também cobre Fargate e Lambda.  |
+| **Spot**                        | Usa capacidade ociosa da AWS com grande desconto.               | Nenhum. Instâncias podem ser interrompidas a qualquer momento. | Até 90%             | Processamento em lote, jobs paralelizáveis, testes não críticos. | Pode ser interrompida com 2 min de aviso. Lançamento depende da disponibilidade. Ideal para workloads tolerantes a falhas. |
+| **Dedicated Hosts**             | Servidor físico reservado só para seu uso.                      | Pode ser On-Demand ou reserva.                                 | Nenhuma ou variável | Requisitos de conformidade/licenciamento (por socket/core).      | Mais caro. Permite usar licenças existentes. Total isolamento de hardware.                                                 |
+
+#### Escalabilidade Amazon EC2
+
+>Escalabilidade permite aumentar ou diminuir recursos computacionais conforme a demanda da aplicação.
+>
+
+	Problema do Data Center On-Premises:
+	Comprar hardware baseado na média de uso = problema nos picos
+	Comprar baseado no pico de uso = recursos ociosos
+	utilização média < 10% em muitos data centers por medo de indisponibilidade
+
+Com a AWS você provisiona os recursos necessários em tempo real e conforme a demanda.
+
+- Clientes satisfeitos (serviço disponível).
+- Equipe financeira satisfeita (uso otimizado de recursos).
+
+#### EC2 Auto Scaling  
+
+Serviço que ajusta automaticamente a quantidade de instâncias EC2 com base em métricas de uso.
+Você cria Grupos baseados na necessidade da aplicação, desenhando um mínimo, desejável e máximo
+
+| Tipo de Escalonamento | Descrição                                                          |
+| --------------------- | ------------------------------------------------------------------ |
+| Dyanmic Scaling       | Adiciona ou remove instâncias em resposta à demanda em tempo real. |
+| Predictive Scaling    | Ajusta instâncias com base em previsões de demanda futuras.        |
+
+
+
+##### Configurações de um Auto Scaling Group
+
+| Configuração     | Descrição                                                                      |
+| ---------------- | ------------------------------------------------------------------------------ |
+| Minimum Capacity | Número mínimo de instâncias que sempre estarão ativas.                         |
+| Desired Capacity | Número ideal de instâncias que você quer manter (pode ser maior que o mínimo). |
+| Maxium Capacity  | Número máximo de instâncias que o grupo pode escalar.                          |
+ **Exemplo**:
+- Mínimo: 1 instância    
+- Desejado: 2 instâncias
+- Máximo: 4 instâncias  
+    Resultado: sempre pelo menos 1, tenta manter 2, nunca passa de 4.
+
+![EC2 Auto Scaling](../PICS/ec2-Auto-Scaling-Group.png)
+***O EC2 AUTO SCALING APENAS ESCALA DE FORMA HORIZONTAL***
+Benefícios do EC2 Auto Scaling
+- Escalonamento automático sob demanda
+- Paga somente pelas instâncias em uso
+- Alta disponibilidade por redundância
+- Redução de custos com instâncias ociosas
+- Baseado em métricas (CPU, uso de memória, requisições, etc.)
+
+#### Elastic Load Balacing (ELB)
+
+>**Elastic Load Balancing (ELB)** é um serviço gerenciado da AWS que **distribui automaticamente o tráfego de entrada entre múltiplos recursos**, como instâncias EC2. Ele atua como **ponto único de entrada** para aplicações que utilizam Auto Scaling, garantindo **alta disponibilidade, desempenho e escalabilidade automática**.
+
+![[ELB.png]]
+### Como funciona com Auto Scaling
+- Quando novas instâncias EC2 entram em operação, o Auto Scaling as registra no ELB.
+- Quando instâncias são removidas:    
+    - O ELB primeiro **"drena"** as conexões ativas (espera as requisições atuais finalizarem).
+    - Só depois a instância é terminada → sem interrupção para o cliente.
+### Benefícios do ELB
+- Alta disponibilidade automática.
+- Distribuição eficiente de carga.
+- Escalabilidade automática.
+- Integração com Auto Scaling.
+- Suporte a arquitetura desacoplada.
+
+
+##### Messaging and Queueing (Mensageria e Fila)
+
+##### **TIGHLY COUPLE ARCHITECTURE VS LOOSELY COUPLED ARCHITECTURE**
+
+| Componentes se comunicam diretamente.          | Comunicação via intermediários (ex: filas).           |
+| ---------------------------------------------- | ----------------------------------------------------- |
+| Se um falha, afeta outros → falhas em cascata. | Se um componente falha, os demais continuam operando. |
+|                                                |                                                       |
+com Loosely coupled architecture a Resiliência e escalabilidade são aumentadas.
+#### Amazon SQS (Simple Queue Service)
+
+- **Modelo**: fila (queue).    
+- Aplicações enviam mensagens para a fila e processam depois.
+- **Payload**: conteúdo da mensagem (ex: nome, pedido, horário).
+- **Vantagens**:
+    - Desacoplamento.
+    - Alta escalabilidade automática.
+    - Alta disponibilidade.
+    - AWS gerencia a infraestrutura da fila.
+- **Útil para**: Processamento assíncrono, buffers entre sistemas.
+#### Amazon SNS (Simple Notification Service)
+
+- **Modelo**: publish/subscribe (pub/sub).
+- Mensagens são publicadas em **tópicos**.
+- Os tópicos entregam mensagens para múltiplos **assinantes**:
+    - SQS, Lambda, Webhooks, SMS, email, push mobile etc.
+- **Fan-out**: uma mensagem → múltiplos destinos.

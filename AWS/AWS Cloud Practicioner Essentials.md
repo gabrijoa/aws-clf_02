@@ -203,8 +203,8 @@ Benefícios do EC2 Auto Scaling
 #### Elastic Load Balacing (ELB)
 
 >**Elastic Load Balancing (ELB)** é um serviço gerenciado da AWS que **distribui automaticamente o tráfego de entrada entre múltiplos recursos**, como instâncias EC2. Ele atua como **ponto único de entrada** para aplicações que utilizam Auto Scaling, garantindo **alta disponibilidade, desempenho e escalabilidade automática**.
-
-![[ELB.png]]
+![Modelo cliente-servidor](../PICS/client-server.png)
+![ELB](../PICS/client-server.png)
 ### Como funciona com Auto Scaling
 - Quando novas instâncias EC2 entram em operação, o Auto Scaling as registra no ELB.
 - Quando instâncias são removidas:    

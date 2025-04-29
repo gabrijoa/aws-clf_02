@@ -3,7 +3,7 @@
 
 >_O modelo cliente-servidor é um tipo de arquitetura de software em que um cliente faz um pedido de dados ou serviço e um servidor processa esse pedido, retornando a resposta adequada. Por exemplo, em uma biblioteca, o visitante (cliente) solicita um livro e o bibliotecário (servidor) entrega o livro requisitado. No ambiente virtual, ao buscar um livro em um site, o servidor recebe sua consulta e devolve o conteúdo solicitado para leitura._
 
-![Modelo cliente-servidor](../PICS/client-server.png)
+![[client-server.png]]
 *Figura 1: Na computação, um cliente pode ser um browser ou uma aplicação desktop; o servidor pode ser um serviço como AWS Lambda, um computador on‑premises ou uma instância EC2.*
 
 
@@ -106,7 +106,8 @@
 	Você se conecta com a aplicação da forma que foi configurada.
 3. Use
 	Você disponibiliza como sua aplicação irá ser fornecida para o determinado uso da sua aplicação/Workload.
-![ec2 diagrama](../PICS/ec2-diagram.png)
+
+![[ec2-diagram.png]]
 
 >*a configuração da EC2 pode ser feita junto com outros serviços da nuvem AWS, desde a implementação programática, escalabilidade, definição de custos e conexão com serviços de banco de dados, teste, escalabilidade, análise de dados, criptografia e etc.*
 #### Tipos de instâncias EC2
@@ -190,8 +191,8 @@ Você cria Grupos baseados na necessidade da aplicação, desenhando um mínimo,
 - Desejado: 2 instâncias
 - Máximo: 4 instâncias  
     Resultado: sempre pelo menos 1, tenta manter 2, nunca passa de 4.
-
-![EC2 Auto Scaling](../PICS/ec2-Auto-Scaling-Group.png)
+    
+![[ec2-Auto-Scaling-Group.png]]
 ***O EC2 AUTO SCALING APENAS ESCALA DE FORMA HORIZONTAL***
 Benefícios do EC2 Auto Scaling
 - Escalonamento automático sob demanda
@@ -245,3 +246,131 @@ com Loosely coupled architecture a Resiliência e escalabilidade são aumentadas
 - Os tópicos entregam mensagens para múltiplos **assinantes**:
     - SQS, Lambda, Webhooks, SMS, email, push mobile etc.
 - **Fan-out**: uma mensagem → múltiplos destinos.
+
+#### AWS Compute Options
+
+
+- #### 1. EC2
+- #### 2. Serverless Computing
+	Execução de código sem se preocupar com provisionamento de infraestrutura de servidores.
+
+| característica            | Server-based (EC2)    | Serverless ex:lambda   |
+| ------------------------- | --------------------- | ---------------------- |
+| Provisionamento           | Manual                | Automático             |
+| Gerenciamento de Servidor | Necessário            | Não Necessário         |
+| Escalabilidade            | Deve ser configurada  | Automática             |
+| Pagamento                 | uptime das instâncias | tempo real de execução |
+- Benefícios
+1. Foco em desenvolver produtos e features.
+2. Escala automática
+3. Pagamento baseado apenas no tempo de execução do código.
+
+#### 3. AWS Lambda
+>Serviço serverless para execução de código sem gerenciar servidores.
+
+![[lambda.png]]
+
+
+- Exemplo de uso :
+1. Redimensionar automaticamente imagens enviadas para o S3.
+- Limitação:
+1. Cada execução deve durar até no máximo 15 minutos.
+
+#### 3. Containers
+
+> Forma padronizada de empacotar código, dependências e configurações em um único objeto.
+
+- Benefícios:
+1. Consistência entre ambientes (dev/test/prod)
+2. Facilita segurança, confiabilidade e escalabilidade
+
+- Exemplo:
+1. O desenvolvedor usa um container para garantir que seu app rode extamente igual no laptop dele e no ambiente de produção
+
+##### 3.1 Conatiner Orchestration Services
+
+| Serviço                                 | Descrição                                                                                   |
+| --------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Amazon ECS (Elastic Container Service)  | Gerenciamento de containers Docker, altamente escalável e com integração nativa à AWS.      |
+| Amazon EKS (Elastic Kubernetes Service) | Execução de aplicações containerizadas usando kubernetes, com gestão automatizada pela AWS. |
+
+
+#### 3.2 AWS Fargate
+- O que é:
+ 1. Um motor serverless para containers, compatível com ECS e EKS.
+ - Vantagens
+ 1. Sem provisionamento de instâncias EC2.
+ 2. Infraestrutura gerenciada pela AWS.
+ 3. Pagamento apenas pelos recursos consumidos.
+
+
+#### 4. Quando usar cada?
+
+
+| Necessidade                                                        | Melhor serviço |
+| ------------------------------------------------------------------ | -------------- |
+| Acesso total ao SO                                                 | EC2            |
+| Executar funções pequenas/event-driven, sem se preocupar com infra | Lambda         |
+| Rodar containers Docker                                            | ECS ou EKS     |
+| Rodar containers sem gerenciar EC2                                 | Fargate        |
+# Resumo
+
+- Se precisa **gerenciar servidores**, use **EC2**.
+- Se quer apenas rodar **funções sob demanda**, use **Lambda**.
+- Se usa **Docker** e precisa de orquestração, escolha **ECS** (mais simples) ou **EKS** (Kubernetes).
+- Se quer containers sem se preocupar com EC2, vá de **Fargate**.
+
+## 
+
+**Additional resources**
+
+To learn more about the concepts that were explored in Module 2, review these resources.
+
+- [Compute on AWS](https://aws.amazon.com/products/compute)
+- [AWS Compute Blog](https://aws.amazon.com/blogs/compute/)
+- [AWS Compute Services](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/compute-services.html)
+[Hands-On Tutorials: Compute](https://aws.amazon.com/getting-started/hands-on/?awsf.getting-started-category=category%23compute&awsf.getting-started-content-type=content-type%23hands-on)
+- [Category Deep Dive: Serverless](https://aws.amazon.com/getting-started/deep-dive-serverless/)
+- [AWS Customer Stories: Serverless](https://aws.amazon.com/solutions/case-studies/?customer-references-cards.sort-by=item.additionalFields.publishedDate&customer-references-cards.sort-order=desc&awsf.customer-references-location=*all&awsf.customer-references-segment=*all&awsf.customer-references-product=product%23vpc%7Cproduct%23api-gateway%7Cproduct%23cloudfront%7Cproduct%23route53%7Cproduct%23directconnect%7Cproduct%23elb&awsf.customer-references-category=category%23serverless)
+- [Amazon EC2 Reserved Instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html)
+- [How Savings Plans apply to usage](https://docs.aws.amazon.com/savingsplans/latest/userguide/sp-applying.html)
+
+# 3. AWS Global Infrastructure: Regions and Availability Zones
+
+#### 3.1 Introdução 
+> Antes da AWS, empresas precisavam operar suas aplicações em data centers próprios. Home, a AWS oferece a possibilidade de hospedar aplicações em data centers que elas não precisam construir ou manter.
+
+
+Tradicionalmente, empresas teriam que:
+- Construir um segundo data center (muito caro)
+- Ou apenas armazenar backups e esperar que o desastre nunca aconteça (o que não é um bom plano de negócios).
+
+AWS resolve isso com o conceito de Regiões e Zonas de Disponibilidade (Availability Zones).
+
+#### 3.2 O que é uma Região AWS?
+Região é um conjunto de múltiplos data centers físicos em uma mesma área geográfica.
+- Cada região é:
+1. Isolada das outras.
+2. Conectada através de uma rede de fibra de alta velocidade controlada pela AWS.
+
+Nenhum dado sai de uma região sem autorização explícita, o **compliance local** é respeitado, como por exemplo os dados em Frankfurt não saem da Alemanha ao menos que seja autorizado.
+
+Exemplos de região:
+- Paris
+- Tóquio
+- São Paulo
+- Dublin
+- Ohio
+
+#### 3.3 como escolher uma Região
+Existe **quatro fatores principais** para escolher em qual Região rodar seus serviços:
+
+| Fator                       | Explicação                                                                   | Exemplo                                                                                 |
+| --------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Compliance                  | Restrições legais que exigem que os dados fiquem dentro de certas fronteiras | Se precisa manter dados no Reino Unido, escolha a região de Londres.                    |
+| Proximidade                 | Quanto mais próxima a Região dos seus usuários, menor a latência             | Se seus usuários estão em Singapura, prefira a Região de Singapura.                     |
+| Disponibilidade de Serviços | Nem todas as Regiões têm todos os serviços AWS disponíveis.                  | Ex: Amazon Braket (computação quântica) só é disponível em algumas Regiões.             |
+| Preço                       | custo de operar varia entre Regiões                                          | São Paulo é mais caro (~50% a mais) que Oregon devido à estrutura tributária do Brasil. |
+
+#### 3.4 Availability Zone - AZ (Zona de Disponibilidade) 
+Availability Zone 

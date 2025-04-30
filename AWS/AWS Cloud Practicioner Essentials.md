@@ -373,4 +373,108 @@ Existe **quatro fatores principais** para escolher em qual Região rodar seus se
 | Preço                       | custo de operar varia entre Regiões                                          | São Paulo é mais caro (~50% a mais) que Oregon devido à estrutura tributária do Brasil. |
 
 #### 3.4 Availability Zone - AZ (Zona de Disponibilidade) 
-Availability Zone 
+AZ são uma unidade ou grupos de data centers em uma Região, suas características são:
+- Energia elétrica redundante
+- Rede e conectividade redundantes
+- Cada Região AWS é composta de múltiplas AZs
+##### Design de Resiliência
+- AZs são separadas por dezenas de quilômetros, o suficiente para:
+- reduzir risco de falhas simultâneas.
+-  Garantir baixa latência (milissegundos) entre AZs.
+##### **A AWS RECOMENDA RODAR SUA APLICAÇÃO EM PELO MENOS DUAS AZS.**
+
+![[AZ.png]]
+
+## 3.5 Exemplo prático: EC2 em múltiplas AZs
+
+### Cenário 1: Instância em uma única AZ
+
+- Você lança uma instância EC2 em `us-west-1a` (Norte da Califórnia).
+    
+- Se `us-west-1a` falhar → **perda da instância**.
+    
+
+### Cenário 2: Instâncias em múltiplas AZs
+
+- Você lança instâncias EC2 em `us-west-1a` **e** `us-west-1b`.
+- Se uma AZ falhar, a outra mantém a aplicação funcionando.
+- Com o **Auto Scaling**, é possível **substituir rapidamente** as instâncias perdidas.
+
+#### Serviços Regionais X Serviços Locais
+- muitos serviços AWS são regionais por padrão:
+	Ex: Elastic Load Balancer (ELB) funciona automaticamente em múltiplas AZs sem necessidade de configuração adicional
+- Serviços regionais são altamente disponiveis por design.
+
+
+#### RECAP 
+
+
+| conceito                     | definição                                                 |
+| ---------------------------- | --------------------------------------------------------- |
+| Região                       | Conjunto de AZs em uma área geográfica                    |
+| AZ (Availability Zone)       | Um ou mais data center fisicamente separados mas próximos |
+| Fatores para escolher região | Compliance, Proximidade, Serviços disponíveis, preço      |
+| Melhor prática               | Executar aplicações em pelo menos duas AZs                |
+
+#### Caso de uso real
+Empresa multinacional de e-commerce:
+- Sede em Washington D.C
+- Muitos clientes em singapura
+- solução:
+	- Servidores administrativos na Região Norte de Virgínia.
+	- Aplicações para clientes rodando na Região de Singapura para reduzir a latência.
+
+
+![[az step.png]]![[az step 2.png]]![[az step 3.png]]
+
+- [AWS global infrastructure](https://aws.amazon.com/about-aws/global-infrastructure)
+- [Regions and Availability Zones](https://aws.amazon.com/about-aws/global-infrastructure/regions_az)
+
+#### Edge Locations
+
+
+##### Content Delivery Networks (CDNs)
+> CDN é uma rede de entrega de conteúdo, é uma rede de servidores interconectados que aceleram o carregamento de uma pagina da Web para plicações com dados pesados. 
+> seu propósito principal é reduzir a latência ou o atraso na comunicação criados por um projeto de rede. O trafego de comunicação entre servidores e clientes precisam viajar entre longas distâncias físicas.
+
+| Conceito | Explicação                                                                                         |
+| -------- | -------------------------------------------------------------------------------------------------- |
+| CDN      | Rede de entrega de conteudo que copia dados mais próximos dos clientes                             |
+| AWS CDN  | Amazon CloudFront                                                                                  |
+| Função   | Entrega de dados, vídeos, aplicações e APIs com baixa latência e alta velocidade de transferência. |
+
+![[cdn map.png]]
+
+#### Edge Locations
+- Edge locations: Sites que armazenam cópias em cache dos seus conteúdos próximos dos usuários.
+- separados das Regiões AWS.
+- além do CloudFront, Edge Locations também executam:
+- Amazon Route 53: Serviço de DNS para redirecionar clientes de forma rápida e configurável.
+
+#### AWS dentro do seu Data Center: AWS Outposts
+> O AWS Outposts é uma familia de soluções totalmente gerenciadas que fornecem infraestrutura e serviços da AWS para praticamente qualquer local da borda ou on-premises para uma experiência híbrida verdadeiramente consistente. As soluções do Outposts permitem que os clientes estendam e executem serviços da AWS nativos on-premises.
+> você pode executar alguns produtos da AWS localmente e se conectar a uma ampla gama de serviços disponíveis na região local da AWS
+
+| Serviço      | Descrição                                                                            |
+| ------------ | ------------------------------------------------------------------------------------ |
+| AWS Outposts | instalação de uma "mini-Região AWS" dentro da sua própria infraestrutura.            |
+| Operação     | Propriedade e gerenciamento pela AWS, mas localizada fisicamente no seu prédio.      |
+| Uso          | Casos onde regulamentos ou necessidades específicas impedem uso de Regiões públicas. |
+- **Regions**: Áreas geográficas isoladas, com todos os serviços necessários.
+- **Availability Zones (AZs)**: Permitem alta disponibilidade e recuperação de desastres através de edifícios fisicamente separados (vários quilômetros de distância).
+- **Edge Locations**: Posições distribuídas mundialmente para cache e aceleração de conteúdos com Amazon CloudFront.
+
+
+#### PROVISIONAMENTO DE RECURSOS NA AWS
+
+> Tudo na AWS é baseado em chamadas de api. Isso significa que qualquer ação é feita por meio de requisições pré-definidas a APIs da AWS
+
+
+| Ferramenta             | Descrição                                                           | Características                                                                                                                                                                                                                                                                                                                                                 |
+| ---------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AWS Management Console | Interface web visual para acessar e gerenciar serviços AWS.         | Interface gráfica web;<br>ótima para iniciantes e ambientes de teste;<br>Inclui assistentes e fluxos automáticos;<br>Também está disponível via aplicativo mobile(visualizar alarmes, billing);<br><br>**NÃO RECOMENDADO EM AMBIENTES DE PRODUÇÃO, POIS É MANUAL E SUJEITO A ERROS HUMANOS.**                                                                   |
+| AWS CLI                | interface de linha de comando para executar scripts e comandos AWS. | permite automatizar tarefas via comandos de terminal;<br>Disponível para Windows, macOS e Linux;<br>Ideal para scriptar e repetir ações com consistência;<br><br>exemplo de uso:<br>`aws ec2 run-instances --image-id ami-123456 --count 1 --instance-type t2.micro`<br><br>**Vantagens:** Reduz erros manuais, permite agendamentos, integração com pipelines. |
+| SDKs                   | APIs específicas por linguagem de programação                       | APIs específicas para linguagem como: Python, Java, C++, .NET e outras;<br>Útil para integrar serviços AWS em aplicações existentes;<br>permite evitar chamadas de API de baixo nível;<br><br>***AWS oferece documentação e exemplos de códigos para cada SDK.***                                                                                               |
+| AWS CloudFormation     | infraestrutura como código (IaC), em JSON/YAML.                     |                                                                                                                                                                                                                                                                                                                                                                 |
+| AWS Elastic Beanstalk  | Gerenciamento simplificado de ambientes baseados em EC2.            | Plataforma que orquestra recursos EC2 automaticamente;<br>Você fornece o código e as configurações - a AWS cuida do resto;<br>tarefas como: Ajuste de capacidade, Load balacing, Auto scaling, monitoramento de saúde;<br><br>***Menos foco na infraestrutura, mais foco no código e negócio***                                                                 |
+
